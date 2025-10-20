@@ -20,6 +20,7 @@ app.use(express.json());
 
 const dataPath = path.join(__dirname, "data.json");
 
+// --- Funções auxiliares ---
 function lerUsuarios() {
   if (!fs.existsSync(dataPath)) return { usuarios: [] };
   const data = fs.readFileSync(dataPath, "utf-8");
@@ -30,10 +31,12 @@ function salvarUsuarios(data) {
   fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
 }
 
+// --- Rotas ---
 app.get("/", (req, res) => {
   res.send("💬 Chat interno rodando...");
 });
 
+// Cadastro de usuário
 app.post("/usuarios", (req, res) => {
   const { username, senha, email, imagem } = req.body;
 
@@ -58,11 +61,10 @@ app.post("/usuarios", (req, res) => {
   return res.status(201).json(novoUsuario);
 });
 
+// Buscar usuário pelo username
 app.get("/usuarios/:username", (req, res) => {
   const { username } = req.params;
-  console.log(req.params, "ewasrtyukjhgfdsa")
   const data = lerUsuarios();
-
   const usuario = data.usuarios.find((u) => u.username === username);
 
   if (!usuario) {
@@ -72,9 +74,10 @@ app.get("/usuarios/:username", (req, res) => {
   return res.json(usuario);
 });
 
-// Socket.io
+// --- Socket.io ---
 let connectedUsers = new Map();
 
+// Função para pegar IP real do usuário
 function getClientIP(socket) {
   const forwarded = socket.handshake.headers["x-forwarded-for"];
   const ip = forwarded ? forwarded.split(",")[0] : socket.handshake.address;
@@ -85,35 +88,29 @@ io.on("connection", (socket) => {
   const ip = getClientIP(socket);
   console.log(`🟢 Nova conexão: ${socket.id} (${ip})`);
 
+  // Usuário conectado
   socket.on("user_connected", (userData) => {
     connectedUsers.set(socket.id, { ...userData, ip });
     console.log(`👤 Usuário conectado:`, userData);
     io.emit("users_online", Array.from(connectedUsers.values()));
   });
 
-  socket.on("chat_message", (msg) => {
-    const user = connectedUsers.get(socket.id);
-    if (user) {
-      io.emit("chat_message", { user, msg, time: new Date() });
-    }
-  });
-
-  socket.on("private_message", ({ toSocketId, msg }) => {
-    const user = connectedUsers.get(socket.id);
-    if (user && io.sockets.sockets.get(toSocketId)) {
-      io.to(toSocketId).emit("private_message", {
-        from: user,
-        msg,
-        time: new Date(),
-      });
-    }
-  });
-
+  // Enviar mensagem privada
   socket.on("enviarMensagem", (msg) => {
     console.log("📩 Nova mensagem recebida:", msg);
-    io.emit("novaMensagem", msg);
+
+    const mensagemCompleta = {
+      de: msg.de || "Desconhecido",
+      para: msg.para || null,
+      texto: msg.texto || "",
+      time: msg.time || new Date().toLocaleTimeString(),
+      imagem: msg.imagem || "frontend/img/default-avatar.png",
+    };
+
+    io.emit("novaMensagem", mensagemCompleta);
   });
 
+  // Desconexão
   socket.on("disconnect", () => {
     const user = connectedUsers.get(socket.id);
     console.log(`🔴 Desconectado: ${user?.nome || "desconhecido"}`);
@@ -122,6 +119,7 @@ io.on("connection", (socket) => {
   });
 });
 
+// --- Inicia o servidor ---
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);

@@ -1,32 +1,28 @@
 const abrirChatBtn = document.getElementById('abrirChatBtn');
 const destinatarioInput = document.getElementById('destinatarioInput');
-const chatContainer = document.getElementById('chatContainer');
 const mensagensContainer = document.getElementById('chatMensagens');
 const mensagemInput = document.getElementById('mensagemInput');
 const enviarBtn = document.getElementById('enviarBtn');
 const chatHeader = document.getElementById('chatHeader');
 
 let usuarioAtual = localStorage.getItem('username');
+let imagemAtual = localStorage.getItem('imagem') || 'frontend/img/default-avatar.png';
 let socket;
 let usuarioDestino = null;
 
-// --- Inicialização ---
-window.addEventListener('DOMContentLoaded', () => {
-  if (!usuarioAtual) {
-    window.location.href = 'login.html';
-    return;
-  }
-
   socket = io('http://localhost:3000');
 
-  socket.emit('user_connected', { nome: usuarioAtual });
-  socket.on('chat_message', exibirMensagem);
-  socket.on('novaMensagem', exibirMensagem);
+  socket.emit('user_connected', { nome: usuarioAtual, imagem: imagemAtual });
 
-  
-});
+  socket.removeAllListeners('novaMensagem');
 
-// --- Abrir Chat ---
+  socket.on('novaMensagem', (msg) => {
+    if (msg.para === usuarioAtual || msg.de === usuarioAtual) {
+      exibirMensagem(msg);
+    }
+  });
+
+
 abrirChatBtn.addEventListener('click', async () => {
   const nomeDestino = destinatarioInput.value.trim();
   if (!nomeDestino) {
@@ -45,14 +41,13 @@ abrirChatBtn.addEventListener('click', async () => {
     usuarioDestino = user.username;
 
     abrirJanelaDeChat(user.username);
-    destinatarioInput.value = ''; // limpa o campo após abrir
+    destinatarioInput.value = '';
   } catch (err) {
     console.error('Erro ao abrir chat:', err);
     alert('Erro de conexão com o servidor.');
   }
 });
 
-// --- Enviar Mensagem ---
 enviarBtn.addEventListener('click', () => {
   const texto = mensagemInput.value.trim();
   if (!texto || !usuarioDestino) return;
@@ -62,36 +57,40 @@ enviarBtn.addEventListener('click', () => {
     para: usuarioDestino,
     texto,
     time: new Date().toLocaleTimeString(),
+    imagem: imagemAtual,
   };
 
-
-
-console.log("mensagens", {obj: msg})
+  console.log('💬 Enviando mensagem:', msg);
 
   socket.emit('enviarMensagem', msg);
-  exibirMensagem(msg); // mostra localmente
+  exibirMensagem(msg);
   mensagemInput.value = '';
 });
 
-// --- Exibir Mensagens ---
 function exibirMensagem(msg) {
   const div = document.createElement('div');
-  div.classList.add('mensagem');
+  div.classList.add('msg');
 
-  if (msg.de === usuarioAtual) div.classList.add('minha');
-  else div.classList.add('deles');
+  const souEu = msg.de === usuarioAtual;
+  div.classList.add(souEu ? 'enviada' : 'recebida');
+
+  const imagem = msg.imagem || 'frontend/img/default-avatar.png';
+  const nome = msg.de || 'Desconhecido';
 
   div.innerHTML = `
-    <strong>${msg.de}</strong>:
-    <span>${msg.texto}</span>
-    <small>${msg.time}</small>
+    <img src="${imagem}" alt="${nome}" class="avatar">
+    <div class="msg-content">
+      
+      <span>${msg.texto}</span>
+      <small>${msg.time}</small>
+    </div>
   `;
+
   mensagensContainer.appendChild(div);
   mensagensContainer.scrollTop = mensagensContainer.scrollHeight;
 }
 
-// --- Abrir Janela de Chat ---
 function abrirJanelaDeChat(username) {
   chatHeader.textContent = `💬 Conversando com ${username}`;
-  mensagensContainer.innerHTML = ''; // limpa mensagens antigas
+  mensagensContainer.innerHTML = '';
 }

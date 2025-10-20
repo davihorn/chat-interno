@@ -13,7 +13,6 @@ body {
 .login-container {
   background: #1e293b;
   padding: 40px 30px;
-  border-radius: 20px;
   width: 380px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
   display: flex;
@@ -40,8 +39,8 @@ body {
   flex: 1;
   padding: 12px;
   width: 100px;
-  border-radius: 10px;
   border: none;
+  border-radius: 10px;
   background: #0f172a;
   color: #fff;
   transition: all 0.25s ease;
@@ -56,8 +55,8 @@ input[type="email"]:focus {
 
 input[type="email"] {
   padding: 12px;
-  border-radius: 10px;
   border: none;
+  border-radius: 10px;
   background: #0f172a;
   color: #fff;
   width: 94%;
@@ -110,8 +109,8 @@ input[type="email"] {
 button {
   width: 100%;
   padding: 12px;
-  border-radius: 10px;
   border: none;
+  border-radius: 10px;
   background: linear-gradient(90deg, #2563eb, #1d4ed8);
   color: #fff;
   cursor: pointer;

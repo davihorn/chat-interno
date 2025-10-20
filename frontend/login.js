@@ -38,11 +38,6 @@ loginBtn.addEventListener('click', async () => {
     const data = await res.json();
 
     if (res.ok) {
-      console.log("tesye 1")
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('email', data.email);
-      localStorage.setItem('imagem', data.imagem);
-
       window.location.href = 'index.html';
     } else {
       alert(data.erro || 'Erro ao registrar usuário.');

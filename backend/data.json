@@ -1,5 +1,16 @@
 {
   "usuarios": [
-
+    {
+      "username": "vinicius",
+      "senha": "asd123",
+      "email": "viniciusricardo532@gmail.com",
+      "imagem": "http://127.0.0.1:5501/frontend/img/default-avatar.png"
+    },
+    {
+      "username": "davi",
+      "senha": "123",
+      "email": "davi@gmail.com",
+      "imagem": "http://127.0.0.1:5501/frontend/img/default-avatar.png"
+    }
   ]
 }

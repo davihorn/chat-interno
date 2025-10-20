@@ -11,11 +11,11 @@ let socket;
 let usuarioDestino = null;
 
 // --- Inicialização ---
-window.addEventListener('DOMContentLoaded', () => {
-  if (!usuarioAtual) {
-    window.location.href = 'login.html';
-    return;
-  }
+// window.addEventListener('DOMContentLoaded', () => {
+//   if (!usuarioAtual) {
+//     window.location.href = 'login.html';
+//     return;
+//   }
 
   socket = io('http://localhost:3000');
 
@@ -24,7 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
   socket.on('novaMensagem', exibirMensagem);
 
   
-});
+// });
 
 // --- Abrir Chat ---
 abrirChatBtn.addEventListener('click', async () => {

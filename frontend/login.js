@@ -38,7 +38,7 @@ loginBtn.addEventListener('click', async () => {
     const data = await res.json();
 
     if (res.ok) {
-      console.log("tesye 1")
+      console.log("teste 1")
       localStorage.setItem('username', data.username);
       localStorage.setItem('email', data.email);
       localStorage.setItem('imagem', data.imagem);

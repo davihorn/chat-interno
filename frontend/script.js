@@ -17,7 +17,7 @@ let usuarioDestino = null;
 //     return;
 //   }
 
-  socket = io('http://localhost:3000');
+  socket = io('http://192.168.1.75:3000');
 
   socket.emit('user_connected', { nome: usuarioAtual, imagem: imagemAtual });
 

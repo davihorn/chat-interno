@@ -1,17 +1,16 @@
 {
   "usuarios": [
     {
-      "username": "davi",
+      "username": "vini",
       "senha": "123",
-      "email": "davi@gmail.com",
-      "imagem": "http://127.0.0.1:5501/frontend/img/default-avatar.png"
+      "email": "viniciusricardo532@gmail.com",
+      "imagem": "file:///C:/Users/vinicius.ricardo/Documents/Dev/Github/Externos/chat-interno/frontend/img/default-avatar.png"
     },
     {
-       "username": "vinicius",
-      "senha": "asd123",
-      "email": "viniciusricardo532@gmail.com",
+      "username": "davi",
+      "senha": "5465",
+      "email": "/96",
       "imagem": "http://127.0.0.1:5501/frontend/img/default-avatar.png"
     }
-      
   ]
 }

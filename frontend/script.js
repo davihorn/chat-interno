@@ -40,7 +40,7 @@ abrirChatBtn.addEventListener('click', async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:3000/usuarios/${nomeDestino}`);
+    const res = await fetch(urlApi+`/usuarios/${nomeDestino}`);
     if (!res.ok) {
       alert('Usuário não encontrado.');
       return;

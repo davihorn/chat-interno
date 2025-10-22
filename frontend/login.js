@@ -5,10 +5,12 @@ const imagemInput = document.getElementById('imagem');
 const previewImg = document.getElementById('previewImg');
 const loginBtn = document.getElementById('loginBtn');
 
+  const urlApi = 'http://192.168.1.75:3000';
+
 imagemInput.addEventListener('change', () => {
   const file = imagemInput.files[0];
   if (!file) {
-    previewImg.src = 'frontend/img/default-avatar.png';
+    previewImg.src = './frontend/img/default-avatar.png';
     return;
   }
 
@@ -21,7 +23,7 @@ loginBtn.addEventListener('click', async () => {
   const username = usernameInput.value.trim();
   const senha = senhaInput.value.trim();
   const email = emailInput.value.trim();
-  const imagem = previewImg.src || 'frontend/img/default-avatar.png';
+  const imagem = previewImg.src || './frontend/img/default-avatar.png';
 
   if (!username || !senha || !email) {
     alert('Preencha todos os campos obrigatórios!');
@@ -29,7 +31,7 @@ loginBtn.addEventListener('click', async () => {
   }
 
   try {
-    const res = await fetch('http://localhost:3000/usuarios', {
+    const res = await fetch(urlApi+`/usuarios`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, senha, email, imagem })

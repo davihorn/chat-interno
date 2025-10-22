@@ -10,7 +10,9 @@ let imagemAtual = localStorage.getItem('imagem') || 'frontend/img/default-avatar
 let socket;
 let usuarioDestino = null;
 
-  socket = io('http://localhost:3000');
+  const urlApi = 'http://192.168.1.75:3000';
+  
+  socket = io(urlApi);
 
   socket.emit('user_connected', { nome: usuarioAtual, imagem: imagemAtual });
 
@@ -31,7 +33,7 @@ abrirChatBtn.addEventListener('click', async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:3000/usuarios/${nomeDestino}`);
+    const res = await fetch(urlApi+`/usuarios/${nomeDestino}`);
     if (!res.ok) {
       alert('Usuário não encontrado.');
       return;

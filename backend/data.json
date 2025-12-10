@@ -1,15 +1,9 @@
 {
   "usuarios": [
     {
-      "username": "vini",
-      "senha": "123",
-      "email": "viniciusricardo532@gmail.com",
-      "imagem": "file:///C:/Users/vinicius.ricardo/Documents/Dev/Github/Externos/chat-interno/frontend/img/default-avatar.png"
-    },
-    {
       "username": "davi",
-      "senha": "5465",
-      "email": "/96",
+      "senha": "123",
+      "email": "davi@gmail.com",
       "imagem": "http://127.0.0.1:5501/frontend/img/default-avatar.png"
     }
   ]

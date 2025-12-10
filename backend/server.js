@@ -122,5 +122,5 @@ io.on("connection", (socket) => {
 // --- Inicia o servidor ---
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+  console.log(`🚀 Servidor rodando em http://192.168.1.75:3554`);
 });
